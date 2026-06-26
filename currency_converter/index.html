@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Currency Converter</title>
+  <style>
+   body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 20px;
+      background: rgba(0,0,0,0.3);
+    }
+    header h1 {
+      font-size: 22px;
+      margin: 0;
+    }
+    .back-btn {
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #ff4d4d;
+      text-decoration: none;
+    }
+    .container {
+      max-width: 500px;
+      margin: 60px auto;
+      background: rgba(255,255,255,0.1);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+    .container h2 {
+      margin-bottom: 10px;
+      font-size: 24px;
+      text-align: center;
+    }
+    .objective {
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #ddd;
+    }
+    select, input {
+      width: 45%;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+    }
+    input {
+      width: 90%;
+    }
+    button {
+      width: 98%;
+      padding: 12px;
+      background: #00c6ff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #0072ff;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      color: #ffeb3b;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Smart Currency Converter</h1>
+  </header>
+   <div class="container">
+    <input type="number" id="amount" placeholder="Enter amount" required>
+
+    <div style="display:flex; justify-content:space-between;">
+      <select id="from">
+  <option value="USD">United States Dollar (USD) – USA, global reserve</option>
+  <option value="EUR">Euro (EUR) – EU countries (Germany, France, Italy, Spain)</option>
+  <option value="JPY">Japanese Yen (JPY) – Japan</option>
+  <option value="GBP">British Pound Sterling (GBP) – United Kingdom</option>
+  <option value="CHF">Swiss Franc (CHF) – Switzerland</option>
+  <option value="CAD">Canadian Dollar (CAD) – Canada</option>
+  <option value="AUD">Australian Dollar (AUD) – Australia</option>
+  <option value="CNY">Chinese Yuan Renminbi (CNY) – China</option>
+  <option value="INR">Indian Rupee (INR) – India</option>
+  <option value="KWD">Kuwaiti Dinar (KWD) – Kuwait, highest-valued currency</option>
+</select>
+
+<select id="to">
+  <option value="USD">United States Dollar (USD) – USA, global reserve</option>
+  <option value="EUR">Euro (EUR) – EU countries (Germany, France, Italy, Spain)</option>
+  <option value="JPY">Japanese Yen (JPY) – Japan</option>
+  <option value="GBP">British Pound Sterling (GBP) – United Kingdom</option>
+  <option value="CHF">Swiss Franc (CHF) – Switzerland</option>
+  <option value="CAD">Canadian Dollar (CAD) – Canada</option>
+  <option value="AUD">Australian Dollar (AUD) – Australia</option>
+  <option value="CNY">Chinese Yuan Renminbi (CNY) – China</option>
+  <option value="INR">Indian Rupee (INR) – India</option>
+  <option value="KWD">Kuwaiti Dinar (KWD) – Kuwait, highest-valued currency</option>
+</select>
+
+    </div>
+
+    <button onclick="convert()">Convert</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    async function convert() {
+      const amount = document.getElementById('amount').value;
+      const from = document.getElementById('from').value;
+      const to = document.getElementById('to').value;
+
+      const response = await fetch('/convert', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ from, to, amount })
+      });
+
+      const data = await response.json();
+      if (data.result) {
+        document.getElementById('result').innerText = 
+          `${amount} ${from} = ${data.result} ${to}`;
+      } else {
+        document.getElementById('result').innerText = "Error: " + data.error;
+      }
+    }
+  </script>
+</body>
+</html>
